@@ -1,0 +1,58 @@
+<%= form_for @recipe, html: { multipart: true } do |f| %>
+<% if @recipe.errors.any? %>
+    <div id="errors">
+      <p>
+        <%= @recipe.errors.count %>
+        Prevented this recipe froms saving
+      </p>
+      <ul>
+        <% @recipe.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="panel-body">
+    <div class="field">
+      <%= f.label :title, input_html: { class: 'form-control' } %><br>
+      <%= f.text_field :title, input_html: { class: 'form-control' } %>
+    </div>
+    <div class="field">
+      <%= f.label :description, input_html: { class: 'form-control' } %><br>
+      <%= f.text_area :description, input_html: { class: 'form-control' } %>
+    </div>
+    <div class="field">
+      <%= f.label :image, input_html: { class: 'form-control' } %><br>
+      <%= f.file_field :image, input_html: { class: 'form-control' } %>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Ingredients</h3>
+          <div id="ingredients">
+            <%= f.fields_for :ingredients do |ingredient| %>
+              <%= render 'ingredient_fields', f: ingredient %>
+            <% end %>
+            <div class="links">
+              <%= link_to_add_association 'Add Ingredient', f, :ingredients, class: "btn btn-default add-button" %>
+            </div>
+          </div>
+      </div>
+      <div class="col-md-6">
+        <h3>Directions</h3>
+          <div id="directions">
+            <%= f.fields_for :directions do |direction| %>
+              <%= render 'direction_fields', f: direction %>
+            <% end %>
+            <div class="links">
+              <%= link_to_add_association 'Add Step', f, :directions, class: "btn btn-default add-button" %>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="actions">
+      <%= f.submit class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
